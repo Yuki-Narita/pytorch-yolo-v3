@@ -2,9 +2,11 @@
 
 
 ## ROS環境で使うためのチュートリアル
-### このリポジトリのクローン(任意の場所)
+### このリポジトリのクローンと重みのダウンロード
 ```
 $ git clone https://github.com/Yuki-Narita/pytorch-yolo-v3.git
+$ cd pytorch-yolo-v3
+$ wget https://pjreddie.com/media/files/yolov3.weights
 ```
 ### ライブラリのインストール(本当に全部必要かは不明)
 共通
@@ -33,7 +35,7 @@ $ pip3 install https://download.pytorch.org/whl/cu100/torchvision-0.3.0-cp35-cp3
 ```
 $ sudo chmod 777 /dev/video0
 ```
-yolo実行(このリポジトリをクローンしたディレクトリ内)
+yolo実行(pytorch-yolo-v3 内で)
 ```
 $ python3 cam_demo.py
 ```
