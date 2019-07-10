@@ -1,9 +1,16 @@
 # ROS-kinetic + ZED 環境ですぐに使えるようにしたリポジトリ
 
-## ROS環境で使うための事前準備(本当に全部必要かは不明)
+
+## ROS環境で使うためのチュートリアル
+### このリポジトリのクローン(任意の場所)
+```
+$ git clone https://github.com/Yuki-Narita/pytorch-yolo-v3.git
+```
+### ライブラリのインストール(本当に全部必要かは不明)
+共通
 ```
 $ sudo apt install python3-pip python3-tk
-$ pip3 install pandas python-opencv cython
+$ pip3 install pandas opencv-python cython
 $ pip3 install pyswarms 'matplotlib<3.0'
 ```
 GPUなし環境
@@ -21,8 +28,23 @@ $ pip3 install https://download.pytorch.org/whl/cu100/torch-1.1.0-cp35-cp35m-lin
 $ pip3 install https://download.pytorch.org/whl/cu100/torchvision-0.3.0-cp35-cp35m-linux_x86_64.whl
 ```
 
-* 下記の実行コマンドで python と書かれている部分は python3 に置き換えて実行する
-* ZEDの解像度変更 cam_demo.py の cap.set(3, width) cap.set(4, height)
+### カメラを使ったリアルタイム画像認識
+カメラ接続後パーミッションを変更(カメラが /dev/video0 に接続されている場合の例)
+```
+$ sudo chmod 777 /dev/video0
+```
+yolo実行(このリポジトリをクローンしたディレクトリ内)
+```
+$ python3 cam_demo.py
+```
+オプションを付ける場合の例(詳細は下の方の公式README)
+```
+$ python3 cam_demo.py --confidence 0.6 --reso 320
+```
+### メモ
+* 下記の公式チュートリアルのコマンドを使う場合 python と書かれている部分は python3 に置き換えて実行する
+* ZEDの解像度変更は cam_demo.py の cap.set(3, width) cap.set(4, height)
+* カメラが /dev/video1 に接続されている場合は cam_demo.py の cap = cv2.VideoCapture(0) を cv2.VideoCapture(1) に変更
 
 # A PyTorch implementation of a YOLO v3 Object Detector
 
