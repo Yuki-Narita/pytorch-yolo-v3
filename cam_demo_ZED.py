@@ -105,7 +105,7 @@ if __name__ == '__main__':
     videofile = 'video.avi'
     
     cap = cv2.VideoCapture(0)
-    cap.set(3, 1280)
+    cap.set(3, 2560)
     cap.set(4, 720)
     
     assert cap.isOpened(), 'Cannot capture source'
@@ -114,9 +114,9 @@ if __name__ == '__main__':
     start = time.time()    
     while cap.isOpened():
         
-        ret, frame = cap.read()
-        #h, w, c = frame_temp.shape
-        #frame = frame_temp[0:h,0:(int)(w/2)]
+        ret, frame_temp = cap.read()
+        h, w, c = frame_temp.shape
+        frame = frame_temp[0:h,0:(int)(w/2)]
 
         if ret:
             
