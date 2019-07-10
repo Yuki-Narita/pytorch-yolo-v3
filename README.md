@@ -1,4 +1,4 @@
-# ROS環境でもすぐに使えるようにしたリポジトリ
+# ROS-kinetic + ZED 環境ですぐに使えるようにしたリポジトリ
 
 ## ROS環境で使うための事前準備(本当に全部必要かは不明)
 ```
@@ -11,16 +11,18 @@ GPUなし環境
 $ pip3 install https://download.pytorch.org/whl/cpu/torch-1.1.0-cp35-cp35m-linux_x86_64.whl
 $ pip3 install https://download.pytorch.org/whl/cpu/torchvision-0.3.0-cp35-cp35m-linux_x86_64.whl
 ```
-GPU(CUDA9.0)環境
+GPU(CUDA9.0)環境 (未検証)
 ```
 $ pip3 install torch torchvision
 ```
-GPU(CUDA10.0)環境
+GPU(CUDA10.0)環境 (未検証)
 ```
 $ pip3 install https://download.pytorch.org/whl/cu100/torch-1.1.0-cp35-cp35m-linux_x86_64.whl
 $ pip3 install https://download.pytorch.org/whl/cu100/torchvision-0.3.0-cp35-cp35m-linux_x86_64.whl
 ```
 
+* 下記の実行コマンドで python と書かれている部分は python3 に置き換えて実行する
+* ZEDの解像度変更 cam_demo.py の cap.set(3, width) cap.set(4, height)
 
 # A PyTorch implementation of a YOLO v3 Object Detector
 
