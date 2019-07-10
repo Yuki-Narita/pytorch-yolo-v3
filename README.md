@@ -1,3 +1,27 @@
+# ROS環境でもすぐに使えるようにしたリポジトリ
+
+## ROS環境で使うための事前準備(本当に全部必要かは不明)
+```
+$ sudo apt install python3-pip python3-tk
+$ pip3 install pandas python-opencv cython
+$ pip3 install pyswarms 'matplotlib<3.0'
+```
+GPUなし環境
+```
+$ pip3 install https://download.pytorch.org/whl/cpu/torch-1.1.0-cp35-cp35m-linux_x86_64.whl
+$ pip3 install https://download.pytorch.org/whl/cpu/torchvision-0.3.0-cp35-cp35m-linux_x86_64.whl
+```
+GPU(CUDA9.0)環境
+```
+$ pip3 install torch torchvision
+```
+GPU(CUDA10.0)環境
+```
+$ pip3 install https://download.pytorch.org/whl/cu100/torch-1.1.0-cp35-cp35m-linux_x86_64.whl
+$ pip3 install https://download.pytorch.org/whl/cu100/torchvision-0.3.0-cp35-cp35m-linux_x86_64.whl
+```
+
+
 # A PyTorch implementation of a YOLO v3 Object Detector
 
 [UPDATE] : This repo serves as a driver code for my research. I just graduated college, and am very busy looking for research internship / fellowship roles before eventually applying for a masters. I won't have the time to look into issues for the time being. Thank you.
