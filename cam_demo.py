@@ -1,4 +1,5 @@
 from __future__ import division
+import ros_path_deleter
 import time
 import torch 
 import torch.nn as nn
@@ -104,6 +105,8 @@ if __name__ == '__main__':
     videofile = 'video.avi'
     
     cap = cv2.VideoCapture(0)
+    cap.set(3, 3840)
+    cap.set(4, 1080)
     
     assert cap.isOpened(), 'Cannot capture source'
     
@@ -111,7 +114,10 @@ if __name__ == '__main__':
     start = time.time()    
     while cap.isOpened():
         
-        ret, frame = cap.read()
+        ret, frame_temp = cap.read()
+        h, w, c = frame_temp.shape
+        frame = frame_temp[0:h,0:(int)(w/2)]
+
         if ret:
             
             img, orig_im, dim = prep_image(frame, inp_dim)

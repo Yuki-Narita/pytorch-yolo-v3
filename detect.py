@@ -1,11 +1,12 @@
 from __future__ import division
+import ros_path_deleter
 import time
 import torch 
 import torch.nn as nn
 from torch.autograd import Variable
 import numpy as np
 import cv2 
-from util import *
+from util_fix import *
 import argparse
 import os 
 import os.path as osp
