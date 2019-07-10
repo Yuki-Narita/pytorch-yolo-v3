@@ -1,0 +1,2 @@
+/home/orendi/.local/lib/python3.5/site-packages
+export PYTHONPATH="/home/orendi/.local/lib/python3.5/site-packages:$PYTHONPATH"`

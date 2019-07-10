@@ -1,0 +1,16 @@
+<launch>
+    <arg name="confidence" default="0.25"/>
+    <arg name="nms_thresh" default="0.4"/>
+    <arg name="reso" default="160"/>
+
+    <node pkg="pytorch_yolo_v3_ros" type="cam_demo_ros.py" name="yolo" output="screen">
+        <remap from="camera_image" to="/usb_cam/image_raw"/>
+        <param name="cfg_path" value="$(find pytorch_yolo_v3_ros)/script/cfg/yolov3.cfg"/>
+        <param name="weights_path" value="$(find pytorch_yolo_v3_ros)/script/yolov3.weights"/>
+        <param name="class_names_path" value="$(find pytorch_yolo_v3_ros)/script/data/coco.names"/>
+        <param name="pallete_path" value="$(find pytorch_yolo_v3_ros)/script/pallete"/>
+        <param name="confidence" value="$(arg confidence)"/>
+        <param name="nms_thresh" value="$(arg nms_thresh)"/>
+        <param name="reso" value="$(arg reso)"/>
+    </node>    
+</launch>

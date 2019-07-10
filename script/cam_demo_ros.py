@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*- 
 from __future__ import division
 import ros_path_deleter
 import time
@@ -33,7 +35,7 @@ def prep_image(img, inp_dim):
     img_ = torch.from_numpy(img_).float().div(255.0).unsqueeze(0)
     return img_, orig_im, dim
 
-def write(x, img):
+def write(x, img, classes, colors):
     c1 = tuple(x[1:3].int())
     c2 = tuple(x[3:5].int())
     cls = int(x[-1])
@@ -46,20 +48,20 @@ def write(x, img):
     cv2.putText(img, label, (c1[0], c1[1] + t_size[1] + 4), cv2.FONT_HERSHEY_PLAIN, 1, [225,255,255], 1);
     return img
 
-def arg_parse():
-    """
-    Parse arguements to the detect module
+# def arg_parse():
+#     """
+#     Parse arguements to the detect module
     
-    """
+#     """
     
     
-    parser = argparse.ArgumentParser(description='YOLO v3 Cam Demo')
-    parser.add_argument("--confidence", dest = "confidence", help = "Object Confidence to filter predictions", default = 0.25)
-    parser.add_argument("--nms_thresh", dest = "nms_thresh", help = "NMS Threshhold", default = 0.4)
-    parser.add_argument("--reso", dest = 'reso', help = 
-                        "Input resolution of the network. Increase to increase accuracy. Decrease to increase speed",
-                        default = "160", type = str)
-    return parser.parse_args()
+#     parser = argparse.ArgumentParser(description='YOLO v3 Cam Demo')
+#     parser.add_argument("--confidence", dest = "confidence", help = "Object Confidence to filter predictions", default = 0.25)
+#     parser.add_argument("--nms_thresh", dest = "nms_thresh", help = "NMS Threshhold", default = 0.4)
+#     parser.add_argument("--reso", dest = 'reso', help = 
+#                         "Input resolution of the network. Increase to increase accuracy. Decrease to increase speed",
+#                         default = "160", type = str)
+#     return parser.parse_args()
 
 class RosYolo:
     def __init__(self):
@@ -71,11 +73,15 @@ class RosYolo:
         weightsfile = rospy.get_param("~weights_path")
         self.class_names = rospy.get_param("~class_names_path")
         self.pallete = rospy.get_param("~pallete_path")
+        self.confidence = float(rospy.get_param("~confidence",0.25))
+        self.nms_thesh = float(rospy.get_param("~nms_thresh",0.4))
+        reso = rospy.get_param("~reso",160)
 
         self.num_classes = 80
-        args = arg_parse()
-        self.confidence = float(args.confidence)
-        self.nms_thesh = float(args.nms_thresh)
+        # args = arg_parse()
+        # self.confidence = float(args.confidence)
+        # self.nms_thesh = float(args.nms_thresh)
+        
         self.start = 0
         self.CUDA = torch.cuda.is_available()
 
@@ -84,7 +90,8 @@ class RosYolo:
         self.model = Darknet(cfgfile)
         self.model.load_weights(weightsfile)
 
-        self.model.net_info["height"] = args.reso
+        # self.model.net_info["height"] = args.reso
+        self.model.net_info["height"] = reso
         self.inp_dim = int(self.model.net_info["height"])
         
         assert self.inp_dim % 32 == 0 
@@ -100,7 +107,7 @@ class RosYolo:
 
         self.pub = rospy.Publisher("yolo_image", Image, queue_size=1)
         self.bridge = CvBridge()
-        self.sub = rospy.Subscriber("camera_image", numpy_msgs(Image), self.callback)
+        self.sub = rospy.Subscriber("camera_image", numpy_msg(Image), self.callback)
 
     def callback(self,data):
         # rosmsg を ndarray に変換したい
@@ -142,7 +149,8 @@ class RosYolo:
         colors = pkl.load(open(self.pallete, "rb"))
 
 
-        list(map(lambda x: write(x, orig_im), output))
+        # list(map(lambda x: write(x, orig_im), output))s
+        list(map(lambda x: write(x, orig_im, classes, colors), output))
 
         # cv2.imshow("frame", orig_im) #orig_imをmsgに変換
         # key = cv2.waitKey(1)
@@ -163,4 +171,5 @@ def main():
     rospy.spin()
 
 if __name__ == '__main__':
+    print('test')
     main()
