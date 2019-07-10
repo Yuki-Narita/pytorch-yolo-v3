@@ -31,10 +31,12 @@ $ pip3 install https://download.pytorch.org/whl/cu100/torchvision-0.3.0-cp35-cp3
 ```
 
 ### カメラを使ったリアルタイム画像認識
+<!--
 カメラ接続後パーミッションを変更(カメラが /dev/video0 に接続されている場合の例)
 ```
 $ sudo chmod 777 /dev/video0
 ```
+-->
 yolo実行(pytorch-yolo-v3 内で)
 ```
 $ python3 cam_demo.py
