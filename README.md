@@ -24,7 +24,7 @@ GPU(CUDA9.0)環境 (未検証)
 ```
 $ pip3 install torch torchvision
 ```
-GPU(CUDA10.0)環境 (未検証)
+GPU(CUDA10.0)環境
 ```
 $ pip3 install https://download.pytorch.org/whl/cu100/torch-1.1.0-cp35-cp35m-linux_x86_64.whl
 $ pip3 install https://download.pytorch.org/whl/cu100/torchvision-0.3.0-cp35-cp35m-linux_x86_64.whl
