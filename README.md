@@ -39,16 +39,16 @@ $ sudo chmod 777 /dev/video0
 -->
 yolo実行(pytorch-yolo-v3 内で)
 ```
-$ python3 cam_demo.py
+$ python3 cam_demo_ZED.py
 ```
 オプションを付ける場合の例(詳細は下の方の公式README)
 ```
-$ python3 cam_demo.py --confidence 0.6 --reso 320
+$ python3 cam_demo_ZED.py --confidence 0.6 --reso 320
 ```
 ### メモ
 * 下記の公式チュートリアルのコマンドを使う場合 python と書かれている部分は python3 に置き換えて実行する
-* ZEDの解像度変更は cam_demo.py の cap.set(3, width) cap.set(4, height)
-* カメラが /dev/video1 に接続されている場合は cam_demo.py の cap = cv2.VideoCapture(0) を cv2.VideoCapture(1) に変更
+* ZEDの解像度変更は cam_demo_ZED.py の cap.set(3, width) cap.set(4, height)
+* カメラが /dev/video1 に接続されている場合は cam_demo_ZED.py の cap = cv2.VideoCapture(0) を cv2.VideoCapture(1) に変更
 
 # A PyTorch implementation of a YOLO v3 Object Detector
 
