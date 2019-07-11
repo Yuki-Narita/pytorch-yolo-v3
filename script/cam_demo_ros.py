@@ -1,12 +1,17 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*- 
 from __future__ import division
-import ros_path_deleter
 import time
 import torch 
 import torch.nn as nn
 from torch.autograd import Variable
 import numpy as np
+import rospy
+from sensor_msgs.msg import Image
+from cv_bridge import CvBridge
+from cv_bridge.boost.cv_bridge_boost import getCvType
+from rospy.numpy_msg import numpy_msg
+import ros_path_deleter
 import cv2 
 from util import *
 from darknet import Darknet
@@ -15,11 +20,6 @@ import pandas as pd
 import random 
 import argparse
 import pickle as pkl
-import rospy
-from sensor_msgs.msg import Image
-from cv_bridge import CvBridge
-from rospy.numpy_msg import numpy_msg
-
 
 def prep_image(img, inp_dim):
     """
@@ -65,7 +65,7 @@ def write(x, img, classes, colors):
 
 class RosYolo:
     def __init__(self):
-        rospy.get_param("~parameter")
+        #rospy.get_param("~parameter")
 
         # cfgfile = "cfg/yolov3.cfg"
         # weightsfile = "yolov3.weights"
@@ -112,8 +112,10 @@ class RosYolo:
     def callback(self,data):
         # rosmsg を ndarray に変換したい
         
-        frame = np.frombuffer(data.data, dtype=np.uint8).reshape(data.height, data.width, -1)
-
+        frame_temp = np.frombuffer(data.data, dtype=np.uint8).reshape(data.height, data.width, -1)
+        h, w, c = frame_temp.shape
+        frame = frame_temp[0:h,0:(int)(w/2)]
+        
         img, orig_im, dim = prep_image(frame, self.inp_dim)
             
         im_dim = torch.FloatTensor(dim).repeat(1,2)                        
@@ -129,8 +131,8 @@ class RosYolo:
         if type(output) == int:
             self.frames += 1
             print("FPS of the video is {:5.2f}".format( self.frames / (time.time() - self.start)))
-            # cv2.imshow("frame", orig_im)
-            # key = cv2.waitKey(1)
+            cv2.imshow("frame", orig_im)
+            key = cv2.waitKey(1)
             self.pub.publish(self.bridge.cv2_to_imgmsg(orig_im, "bgr8"))
             # if key & 0xFF == ord('q'):
             #     break
@@ -152,8 +154,14 @@ class RosYolo:
         # list(map(lambda x: write(x, orig_im), output))s
         list(map(lambda x: write(x, orig_im, classes, colors), output))
 
-        # cv2.imshow("frame", orig_im) #orig_imをmsgに変換
-        # key = cv2.waitKey(1)
+        cv2.imshow("frame", orig_im) #orig_imをmsgに変換
+        key = cv2.waitKey(1)
+        #print cv type
+        height, width, channels = orig_im.shape[:3]
+        print("width: " + str(width))
+        print("height: " + str(height))
+        print("channels: " + str(channels))
+        print("dtype: " + str(orig_im.dtype))        
         # if key & 0xFF == ord('q'):
         #     break
         self.pub.publish(self.bridge.cv2_to_imgmsg(orig_im, "bgr8"))
